@@ -21,3 +21,22 @@ def list_interactions(db: Session, lead_id: int, limit: int = 50, offset: int = 
         .limit(limit)
         .all()
     )
+
+
+def get_interaction(db: Session, interaction_id: int) -> Interaction | None:
+    return db.query(Interaction).filter(Interaction.id == interaction_id).first()
+
+
+def update_interaction(db: Session, interaction: Interaction, payload: dict) -> Interaction:
+    for k, v in payload.items():
+        setattr(interaction, k, v)
+
+    db.add(interaction)
+    db.commit()
+    db.refresh(interaction)
+    return interaction
+
+
+def delete_interaction(db: Session, interaction: Interaction) -> None:
+    db.delete(interaction)
+    db.commit()

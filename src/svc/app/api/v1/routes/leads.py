@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from app.api.v1.routes.lead_query_params import LeadQueryParams
 from app.db.deps import get_db
 from app.schemas.leads import LeadCreate, LeadOut, LeadUpdate
-from app.services import leads_service
+from app.schemas.interactions import SuggestRequest, SuggestResponse
+from app.services import leads_service, suggest_service
 
 router = APIRouter()
 
@@ -63,3 +64,27 @@ def delete_lead(lead_id: int, db: Session = Depends(get_db)):
         )
 
     leads_service.delete_lead(db=db, lead=lead)
+
+
+@router.post("/{lead_id}/suggest", response_model=SuggestResponse)
+def suggest_message_endpoint(
+    lead_id: int, request: SuggestRequest, db: Session = Depends(get_db)
+):
+    """Generate a suggested message for a lead based on interaction history."""
+    lead = leads_service.get_lead(db=db, lead_id=lead_id)
+    if not lead:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Lead not found"
+        )
+
+    result = suggest_service.suggest_message(
+        db=db, lead_id=lead_id, interaction_type=request.type, notes=request.notes
+    )
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to generate suggestion"
+        )
+
+    return result

@@ -133,6 +133,34 @@ Stores interaction history per lead.
 
 ---
 
+## 2.3 Suggest Message (Based on Past Interactions)
+
+### Purpose
+Generate a suggested message to communicate to the lead, based on:
+- Lead details (name, status, source, AI summary)
+- Past interactions (type + notes)
+- Current interaction type and notes draft (optional)
+
+This supports the **“Suggest”** button in the Add Interaction screen.
+
+---
+
+### 2.3.1 Suggest Message for a Lead
+**POST** `/api/v1/leads/{lead_id}/interactions/suggest`
+
+#### Request Body
+- `type` *(required)*: `call | email | meeting | note`
+- `notes` *(optional)*: current context entered by user (draft)
+
+Example:
+```json
+{
+  "type": "call",
+  "notes": "Demo requested for next week. Needs pricing details."
+}
+
+---
+
 ## 3) Common API Rules
 
 ### 3.1 Status Values

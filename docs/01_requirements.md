@@ -24,7 +24,7 @@
   "name": "Acme Corp",
   "email": "contact@acme.com",
   "phone": "+1-555-0123",
-  "status": "new",  # new, contacted, qualified, lost
+  "status": "new",  # new, contacted, interested, qualified, lost
   "source": "website",
   "created_at": "2025-01-15",
   "ai_summary": "Tech startup, 50 employees, needs CRM"

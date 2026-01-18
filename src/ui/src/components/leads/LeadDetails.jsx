@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '../../hooks/useToast';
 import leadsApi from '../../services/leadsApi';
 import { LeadStatusBadge } from './LeadStatusBadge';
-import { LEAD_STATUS_OPTIONS } from '../../utils/constants';
+import { LEAD_STATUS_OPTIONS, isPastDue, PAST_DUE_BG_COLOR } from '../../utils/constants';
 
 export function LeadDetails({ leadId }) {
   const [lead, setLead] = useState(null);
@@ -159,7 +159,13 @@ toast.toast({
             <Text>{new Date(lead.created_at).toLocaleDateString()}</Text>
           </Box>
 
-          
+          <Box bg={isPastDue(lead.next_contact_date) ? PAST_DUE_BG_COLOR : "white"} p={3} borderRadius="md">
+            <Text fontSize="sm" color="gray.500" fontWeight="600">
+              Next Contact Date
+            </Text>
+            <Text>{lead.next_contact_date ? new Date(lead.next_contact_date).toLocaleDateString() : '-'}</Text>
+          </Box>
+
         </Grid>
 
         {lead.ai_summary && (

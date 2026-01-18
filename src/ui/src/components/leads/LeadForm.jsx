@@ -22,6 +22,7 @@ export function LeadForm({ leadId }) {
     status: 'new',
     source: '',
     ai_summary: '',
+    next_contact_date: '',
   });
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(!!leadId);
@@ -39,7 +40,7 @@ export function LeadForm({ leadId }) {
       const response = await leadsApi.get(leadId);
       setFormData(response.data);
     } catch (error) {
-      toast({
+      toast.toast({
         title: 'Error loading lead',
         description: error.response?.data?.detail || 'Failed to load lead',
         status: 'error',
@@ -62,7 +63,7 @@ export function LeadForm({ leadId }) {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      toast({
+      toast.toast({
         title: 'Validation error',
         description: 'Lead name is required',
         status: 'error',
@@ -71,7 +72,7 @@ export function LeadForm({ leadId }) {
     }
 
     if (formData.name.length < 2) {
-      toast({
+      toast.toast({
         title: 'Validation error',
         description: 'Lead name must be at least 2 characters',
         status: 'error',
@@ -83,20 +84,20 @@ export function LeadForm({ leadId }) {
       setLoading(true);
       if (leadId) {
         await leadsApi.update(leadId, formData);
-        toast({
+        toast.toast({
           title: 'Lead updated',
           status: 'success',
         });
       } else {
         await leadsApi.create(formData);
-        toast({
+        toast.toast({
           title: 'Lead created',
           status: 'success',
         });
       }
       navigate(`/leads/${leadId || ''}`);
     } catch (error) {
-      toast({
+      toast.toast({
         title: 'Error saving lead',
         description: error.response?.data?.detail || 'Failed to save lead',
         status: 'error',
@@ -165,6 +166,17 @@ export function LeadForm({ leadId }) {
               </option>
             ))}
           </select>
+        </Box>
+
+        <Box>
+          <Text fontWeight="600" mb={2}>Next Contact Date</Text>
+          <input
+            type="date"
+            name="next_contact_date"
+            value={formData.next_contact_date ? formData.next_contact_date.split('T')[0] : ''}
+            onChange={handleChange}
+            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #e2e8f0' }}
+          />
         </Box>
 
         <Box>

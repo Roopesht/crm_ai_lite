@@ -14,6 +14,7 @@ class LeadCreate(BaseModel):
     status: Optional[LeadStatus] = "new"
     source: Optional[str] = None
     ai_summary: Optional[str] = None
+    next_contact_date: Optional[datetime] = None
 
 
 class LeadUpdate(BaseModel):
@@ -23,6 +24,7 @@ class LeadUpdate(BaseModel):
     status: Optional[LeadStatus] = None
     source: Optional[str] = None
     ai_summary: Optional[str] = None
+    next_contact_date: Optional[datetime] = None
 
 
 class LeadOut(BaseModel):
@@ -33,6 +35,7 @@ class LeadOut(BaseModel):
     status: LeadStatus
     source: Optional[str]
     ai_summary: Optional[str]
+    next_contact_date: Optional[datetime]
     created_at: datetime
 
     class Config:

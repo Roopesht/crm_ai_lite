@@ -27,3 +27,13 @@ export const getStatusLabel = (status) => {
   const option = LEAD_STATUS_OPTIONS.find((opt) => opt.value === status);
   return option ? option.label : status;
 };
+
+export const PAST_DUE_BG_COLOR = 'red.50';
+
+export const isPastDue = (dateString) => {
+  if (!dateString) return false;
+  const nextContactDate = new Date(dateString);
+  const today = new Date();
+  // Compare only the date part (not time)
+  return nextContactDate.toLocaleDateString() < today.toLocaleDateString();
+};

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
+from sqlalchemy import desc, case, func
 
 from app.models.lead import Lead
 
@@ -21,7 +21,12 @@ def list_leads(db: Session, q: str | None = None, status: str | None = None, lim
     if status:
         query = query.filter(Lead.status == status)
 
-    query = query.order_by(desc(Lead.created_at)).offset(offset).limit(limit)
+    # Sort by past-due leads first, then by created_at DESC
+    # Past due: next_contact_date is not null AND next_contact_date < today
+    query = query.order_by(
+        case((func.date(Lead.next_contact_date) < func.curdate(), 0), else_=1),
+        desc(Lead.created_at)
+    ).offset(offset).limit(limit)
     return query.all()
 
 

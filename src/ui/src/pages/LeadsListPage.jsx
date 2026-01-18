@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/useToast';
 import leadsApi from '../services/leadsApi';
 import { LeadStatusBadge } from '../components/leads/LeadStatusBadge';
+import { isPastDue, PAST_DUE_BG_COLOR } from '../utils/constants';
 
 export function LeadsListPage() {
   const [leads, setLeads] = useState([]);
@@ -76,7 +77,7 @@ export function LeadsListPage() {
           {leads.map((lead) => (
             <Box
               key={lead.id}
-              bg="white"
+              bg={isPastDue(lead.next_contact_date) ? PAST_DUE_BG_COLOR : "white"}
               p={4}
               borderRadius="md"
               shadow="sm"
@@ -95,6 +96,11 @@ export function LeadsListPage() {
                 <Text>{lead.email || '-'}</Text>
                 <Text>{lead.phone || '-'}</Text>
                 <Text>{lead.source || 'No source'}</Text>
+                {lead.next_contact_date && (
+                  <Text fontWeight="500" color={isPastDue(lead.next_contact_date) ? "red.700" : "gray.600"}>
+                    Next Contact: {new Date(lead.next_contact_date).toLocaleDateString()}
+                  </Text>
+                )}
                 <Text fontSize="xs" color="gray.400">
                   {new Date(lead.created_at).toLocaleDateString()}
                 </Text>

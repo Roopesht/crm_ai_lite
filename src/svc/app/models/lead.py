@@ -20,6 +20,7 @@ class Lead(Base):
 
     source = Column(String(50), nullable=True)
     ai_summary = Column(Text, nullable=True)
+    next_contact_date = Column(DateTime, nullable=True)
 
     created_at = Column(DateTime, nullable=False, server_default=func.now())
     updated_at = Column(

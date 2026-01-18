@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS leads (
   ai_summary TEXT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  next_contact_date DATETIME NULL,
   PRIMARY KEY (id),
   INDEX idx_leads_status (status),
   INDEX idx_leads_created_at (created_at),

@@ -6,7 +6,6 @@ import {
   Heading,
   Text,
   Button,
-  Select,
   Spinner,
   Grid,
 } from '@chakra-ui/react';
@@ -86,6 +85,7 @@ toast.toast({
   }
 
   return (
+
     <VStack align="stretch" spacing={6}>
       <Box bg="white" p={6} borderRadius="md" shadow="sm">
         <HStack justify="space-between" mb={6}>
@@ -100,6 +100,8 @@ toast.toast({
         </HStack>
 
         <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+
+
           <Box>
             <Text fontSize="sm" color="gray.500" fontWeight="600">
               Email
@@ -113,30 +115,36 @@ toast.toast({
             </Text>
             <Text>{lead.phone || '-'}</Text>
           </Box>
-
+          
           <Box>
             <Text fontSize="sm" color="gray.500" fontWeight="600">
               Status
             </Text>
             <HStack spacing={2} mt={2}>
-              <Select
+              <select
                 name="status"
                 value={lead.status}
                 onChange={handleStatusChange}
-                isDisabled={updatingStatus}
-                maxW="150px"
-                size="sm"
+                disabled={updatingStatus}
+                style={{
+                  maxWidth: '150px',
+                  padding: '0.5rem',
+                  fontSize: '0.875rem',
+                  borderRadius: '0.375rem',
+                  border: '1px solid #e2e8f0',
+                }}
               >
                 {LEAD_STATUS_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
-              </Select>
+              </select>
               {updatingStatus && <Spinner size="sm" />}
             </HStack>
           </Box>
-
+          
+                
           <Box>
             <Text fontSize="sm" color="gray.500" fontWeight="600">
               Source
@@ -150,6 +158,8 @@ toast.toast({
             </Text>
             <Text>{new Date(lead.created_at).toLocaleDateString()}</Text>
           </Box>
+
+          
         </Grid>
 
         {lead.ai_summary && (
